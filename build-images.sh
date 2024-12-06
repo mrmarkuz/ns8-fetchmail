@@ -7,11 +7,25 @@
 
 # Terminate on error
 set -e
-
 # Prepare variables for later use
 images=()
 # The image will be pushed to GitHub container registry
-repobase="${REPOBASE:-ghcr.io/nethserver}"
+repobase="${REPOBASE:-ghcr.io/mrmarkuz}"
+
+#Create fetchmail-webapp container
+reponame="fetchmail-binary"
+container=$(buildah from docker.io/library/alpine:3.20.2)
+buildah run "${container}" /bin/sh <<'EOF'
+set -e
+apk add --no-cache fetchmail cronie nano
+EOF
+buildah add "${container}" fetchmail/ /
+# Commit the image
+buildah commit --rm "${container}" "${repobase}/${reponame}"
+
+# Append the image URL to the images array
+images+=("${repobase}/${reponame}")
+
 # Configure the image name
 reponame="fetchmail"
 
@@ -34,12 +48,11 @@ buildah run \
 # Add imageroot directory to the container image
 buildah add "${container}" imageroot /imageroot
 buildah add "${container}" ui/dist /ui
-
+# Setup the entrypoint, ask to reserve one TCP port with the label and set a rootless container
 buildah config --entrypoint=/ \
-    --label="org.nethserver.authorizations=traefik@node:routeadm" \
-    --label="org.nethserver.tcp-ports-demand=1" \
+    --label="org.nethserver.authorizations=mail@any:mailadm" \
     --label="org.nethserver.rootfull=0" \
-    --label="org.nethserver.images=docker.io/mariadb:10.11.5 docker.io/nginx:1.27.1-alpine3.20" \
+    --label="org.nethserver.images=${repobase}/fetchmail-binary:${IMAGETAG:-latest}" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"

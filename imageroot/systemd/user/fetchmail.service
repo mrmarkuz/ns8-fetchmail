@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 Nethesis S.r.l.
+# Copyright (C) 2023 Nethesis S.r.l.
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
@@ -7,26 +7,34 @@
 # This systemd unit starts a fetchmail instance using Podman.
 # Most parts of this file come from podman-generate-systemd.
 #
-
 [Unit]
-Description=Podman fetchmail.service
-Requires=mariadb-app.service fetchmail-app.service
-Before=mariadb-app.service fetchmail-app.service
+Description=fetchmail server
+#
+# Start the session of rootless modules after Redis
+#
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-EnvironmentFile=-%S/state/environment
+EnvironmentFile=%S/state/environment
+WorkingDirectory=%S/state
 Restart=always
-TimeoutStopSec=70
-ExecStartPre=/bin/rm -f %t/fetchmail.pid %t/fetchmail.pod-id
-ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/fetchmail.pid \
-    --pod-id-file %t/fetchmail.pod-id \
-    --name fetchmail \
-    --publish 127.0.0.1:${TCP_PORT}:80 \
-    --replace
-ExecStart=/usr/bin/podman pod start --pod-id-file %t/fetchmail.pod-id
-ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/fetchmail.pod-id -t 10
-ExecStopPost=/usr/bin/podman pod rm --ignore -f --pod-id-file %t/fetchmail.pod-id
+ExecStartPre=/bin/rm -f %t/fetchmail.pid %t/fetchmail.ctr-id
+ExecStartPre=mkdir -vp %S/state/fetchmail
+ExecStartPre=mkdir -vp %S/state/cron
+#ExecStartPre=runagent reveal-master-secret
+#ExecStartPre=runagent expand-cron
+ExecStart=/usr/bin/podman run \
+    --detach \
+    --conmon-pidfile=%t/fetchmail.pid \
+    --cidfile=%t/fetchmail.ctr-id \
+    --cgroups=no-conmon \
+    --replace --name=%N \
+    --env MAIL_HOST=${MAIL_HOST} \
+    --volume ./fetchmail:/etc/fetchmail:z \
+    --volume ./cron:/etc/cron.d:z \
+    ${FETCHMAIL_BINARY_IMAGE} /usr/sbin/crond -f -m off
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/fetchmail.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/fetchmail.ctr-id
 PIDFile=%t/fetchmail.pid
 Type=forking
 
