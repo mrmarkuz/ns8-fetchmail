@@ -5,32 +5,18 @@
     "description": "Get fetchmail settings",
     "examples": [
         {
-            "host": "fetchmail.domain.org",
-            "http2https": true,
-            "lets_encrypt": true
+            "host": "fetchmail.domain.org"
         }
     ],
     "type": "object",
     "required": [
-        "host",
-        "http2https",
-        "lets_encrypt"
+        "host"
     ],
     "properties": {
         "host": {
             "type": "string",
             "description": "Host name for the application, like 'fetchmail.domain.org'",
             "format": "idn-hostname"
-        },
-        "lets_encrypt": {
-            "type": "boolean",
-            "title": "Let's Encrypt certificate",
-            "description": "Request a valid Let's Encrypt certificate."
-        },
-        "http2https": {
-            "type": "boolean",
-            "title": "HTTP to HTTPS redirection",
-            "description": "Redirect all the HTTP requests to HTTPS"
         }
     }
 }

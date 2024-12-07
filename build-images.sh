@@ -17,7 +17,7 @@ reponame="fetchmail-binary"
 container=$(buildah from docker.io/library/alpine:3.20.2)
 buildah run "${container}" /bin/sh <<'EOF'
 set -e
-apk add --no-cache cronie fetchmail fetchmailconf fetchmail-openrc fetchmail-doc nano
+apk add --no-cache cronie fetchmail fetchmail-openrc fetchmail-doc nano
 EOF
 # Exclude add directory to container to make it work - we may need the directory including a bash script later
 #buildah add "${container}" fetchmail/ /
