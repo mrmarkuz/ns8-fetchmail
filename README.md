@@ -23,7 +23,26 @@ Enter the environment (in this example the instance is named fetchmail1)
 
     runagent -m fetchmail1
 
-You'll find 2 directories fetchmail and cron that point to the container directories `/etc/fetchmail` and `/etc/cron.d` so you could put your config files there.
+You'll find 2 directories `fetchmail` and `cron` that point to the container directories `/etc/fetchmail` and `/etc/cron.d` so you could put your config files there.
+
+An example cronjob file to put to `cron/examplecronjob`:
+
+```
+* * * * * fetchmail /etc/fetchmail/fetchmailrc
+```
+
+An example fetchmailrc file to put to `fetchmail/fetchmailrc`:
+
+```
+set no bouncemail
+set no spambounce
+set properties ""
+
+poll pop.server tracepolls proto pop3 uidl auth password port 995 timeout 60
+user "<USER_NAME>" password "<PASSWORD>" ssl keep is <localmailuser@localmailserver.com> smtphost <Neth_IP>
+```
+
+The fetchmailrc file needs to be owned by fetchmail and permission 700.
 
 Another way is to enter the container by executing
 
@@ -107,7 +126,7 @@ HOME=/root
 you can run a shell inside the container
 
 ```
-podman exec -ti   fetchmail-app sh
+podman exec -ti   fetchmail sh
 / # 
 ```
 ## Testing
