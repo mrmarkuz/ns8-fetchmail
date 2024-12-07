@@ -32,35 +32,7 @@
               :disabled="loading.getConfiguration || loading.configureModule"
               ref="host"
             >
-            </cv-text-input>
-            <cv-toggle
-              value="letsEncrypt"
-              :label="$t('settings.lets_encrypt')"
-              v-model="isLetsEncryptEnabled"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              class="mg-bottom"
-            >
-              <template slot="text-left">{{
-                $t("settings.disabled")
-              }}</template>
-              <template slot="text-right">{{
-                $t("settings.enabled")
-              }}</template>
-            </cv-toggle>
-            <cv-toggle
-              value="httpToHttps"
-              :label="$t('settings.http_to_https')"
-              v-model="isHttpToHttpsEnabled"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              class="mg-bottom"
-            >
-              <template slot="text-left">{{
-                $t("settings.disabled")
-              }}</template>
-              <template slot="text-right">{{
-                $t("settings.enabled")
-              }}</template>
-            </cv-toggle>
+            </cv-text-input>            
               <!-- advanced options -->
             <cv-accordion ref="accordion" class="maxwidth mg-bottom">
               <cv-accordion-item :open="toggleAccordion[0]">
@@ -123,8 +95,6 @@ export default {
       },
       urlCheckInterval: null,
       host: "",
-      isLetsEncryptEnabled: false,
-      isHttpToHttpsEnabled: true,
       loading: {
         getConfiguration: false,
         configureModule: false,
@@ -132,9 +102,7 @@ export default {
       error: {
         getConfiguration: "",
         configureModule: "",
-        host: "",
-        lets_encrypt: "",
-        http2https: "",
+        host: "",        
       },
     };
   },
@@ -200,8 +168,7 @@ export default {
     getConfigurationCompleted(taskContext, taskResult) {
       const config = taskResult.output;
       this.host = config.host;
-      this.isLetsEncryptEnabled = config.lets_encrypt;
-      this.isHttpToHttpsEnabled = config.http2https;
+      
 
       this.loading.getConfiguration = false;
       this.focusElement("host");
@@ -269,8 +236,6 @@ export default {
           action: taskAction,
           data: {
             host: this.host,
-            lets_encrypt: this.isLetsEncryptEnabled,
-            http2https: this.isHttpToHttpsEnabled,
           },
           extra: {
             title: this.$t("settings.instance_configuration", {

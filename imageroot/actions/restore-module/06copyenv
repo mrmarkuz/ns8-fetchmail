@@ -14,9 +14,7 @@ request = json.load(sys.stdin)
 original_environment = request['environment']
 
 for evar in [
-        "TRAEFIK_HOST",
-        "TRAEFIK_HTTP2HTTPS",
-        "TRAEFIK_LETS_ENCRYPT",
+        "MAIL_HOST",
     ]:
     agent.set_env(evar, original_environment[evar])
 

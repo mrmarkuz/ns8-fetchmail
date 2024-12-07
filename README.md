@@ -6,45 +6,30 @@ This is a fetchmail module for [NethServer 8](https://github.com/NethServer/ns8-
 
 Instantiate the module with:
 
-    add-module ghcr.io/nethserver/fetchmail:latest 1
+    add-module ghcr.io/mrmarkuz/fetchmail:latest 1
 
 The output of the command will return the instance name.
 Output example:
 
-    {"module_id": "fetchmail1", "image_name": "fetchmail", "image_url": "ghcr.io/nethserver/fetchmail:latest"}
+    {"module_id": "fetchmail1", "image_name": "fetchmail", "image_url": "ghcr.io/mrmarkuz/fetchmail:latest"}
 
 ## Configure
 
-Let's assume that the mattermost instance is named `fetchmail1`.
+In the app settings page just enter a hostname and click save to start the service. The hostname is available as environment variable MAIL_HOST in the container and the user environment.
 
-Launch `configure-module`, by setting the following parameters:
-- `host`: a fully qualified domain name for the application
-- `http2https`: enable or disable HTTP to HTTPS redirection (true/false)
-- `lets_encrypt`: enable or disable Let's Encrypt certificate (true/false)
+## Setup
 
+Enter the environment (in this example the instance is named fetchmail1)
 
-Example:
+    runagent -m fetchmail1
 
-```
-api-cli run configure-module --agent module/fetchmail1 --data - <<EOF
-{
-  "host": "fetchmail.domain.com",
-  "http2https": true,
-  "lets_encrypt": false
-}
-EOF
-```
+You'll find 2 directories fetchmail and cron that point to the container directories `/etc/fetchmail` and `/etc/cron.d` so you could put your config files there.
 
-The above command will:
-- start and configure the fetchmail instance
-- configure a virtual host for trafik to access the instance
+Another way is to enter the container by executing
 
-## Get the configuration
-You can retrieve the configuration with
+    podman exec -ti fetchmail sh
 
-```
-api-cli run get-configuration --agent module/fetchmail1
-```
+and just use nano to configure files in `/etc/fetchmail` and `/etc/cron.d` directly.
 
 ## Uninstall
 

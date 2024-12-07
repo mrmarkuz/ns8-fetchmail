@@ -27,7 +27,7 @@ data = json.load(sys.stdin)
 # agent.set_env("AUXILIARYACCOUNT",data.get("auxiliary_account",True))
 # agent.set_env("ACTIVESYNC",data.get("activesync",False))
 
-
+agent.set_env("MAIL_HOST",host)
 # Make sure everything is saved inside the environment file
 # just before starting systemd unit
-#agent.dump_env()
+agent.dump_env()
