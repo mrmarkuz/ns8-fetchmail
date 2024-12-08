@@ -25,13 +25,15 @@ Enter the environment (in this example the instance is named fetchmail1)
 
 You'll find 2 directories `fetchmail` and `cron` that point to the container directories `/etc/fetchmail` and `/etc/cron.d` so you could put your config files there.
 
-An example cronjob file to put to `cron/examplecronjob`:
+There's another directory `log` that maps `/var/log` in the container to be able to check the log file(s).
+
+An example cronjob file to put to `cron/examplecronjob` that runs fetchmail every 5 minutes:
 
 ```
-* * * * * fetchmail /etc/fetchmail/fetchmailrc
+*/5 * * * * root /usr/bin/fetchmail -f /etc/fetchmail/fetchmailrc -L /var/log/fetchmail.log
 ```
 
-An example fetchmailrc file to put to `fetchmail/fetchmailrc`:
+An example fetchmail config file to put to `fetchmail/fetchmailrc`:
 
 ```
 set no bouncemail
@@ -42,13 +44,9 @@ poll pop.server tracepolls proto pop3 uidl auth password port 995 timeout 60
 user "<USER_NAME>" password "<PASSWORD>" ssl keep is <localmailuser@localmailserver.com> smtphost <Neth_IP>
 ```
 
-The fetchmailrc file needs to be owned by fetchmail and permission 700.
+The fetchmailrc file needs to have permission 700.
 
-Another way is to enter the container by executing
-
-    podman exec -ti fetchmail sh
-
-and just use nano to configure files in `/etc/fetchmail` and `/etc/cron.d` directly.
+    chmod 700 fetchmail/fetchmailrc
 
 ## Uninstall
 
