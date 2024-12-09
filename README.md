@@ -30,7 +30,7 @@ There's another directory `log` that maps `/var/log` in the container to be able
 An example cronjob file to put to `cron/examplecronjob` that runs fetchmail every 5 minutes:
 
 ```
-*/5 * * * * root /usr/bin/fetchmail -f /etc/fetchmail/fetchmailrc -L /var/log/fetchmail.log
+*/5 * * * * root /usr/bin/fetchmail -d0 -v -f /etc/fetchmail/fetchmailrc -L /var/log/fetchmail.log
 ```
 
 An example fetchmail config file to put to `fetchmail/fetchmailrc`:
@@ -41,12 +41,22 @@ set no spambounce
 set properties ""
 
 poll pop.server tracepolls proto pop3 uidl auth password port 995 timeout 60
-user "<USER_NAME>" password "<PASSWORD>" ssl keep is <localmailuser@localmailserver.com> smtphost <Neth_IP>
+    user "<USER_NAME>" password "<PASSWORD>" ssl keep is <localmailuser@localmailserver.com> smtphost <Neth_IP>
+```
+
+This one did work for IMAP:
+
+```
+#   IMAP
+poll mrmarkuz.dynu.net proto imap port 143
+    user "<USER_NAME>" password "<PASSWORD>" keep is "markus@ns8test.com" here smtphost <Neth_IP>
 ```
 
 The fetchmailrc file needs to have permission 700.
 
     chmod 700 fetchmail/fetchmailrc
+
+After setting a cronjob and fetchmail config the mails should be fetched as given in your config. The mails are checked by rspamd.
 
 ## Uninstall
 
