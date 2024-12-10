@@ -31,6 +31,7 @@ ExecStart=/usr/bin/podman run \
     --cidfile=%t/fetchmail.ctr-id \
     --cgroups=no-conmon \
     --replace --name=%N \
+    --network=slirp4netns \
     --env MAIL_HOST=${MAIL_HOST} \
     --volume ./fetchmail:/etc/fetchmail:z \
     --volume ./cron:/etc/cron.d:z \
