@@ -48,7 +48,7 @@ This one did work for IMAP:
 
 ```
 #   IMAP
-poll mrmarkuz.dynu.net proto imap port 143
+poll mrmarkuz.domain.tld proto imap port 143
     user "<USER_NAME>" password "<PASSWORD>" keep is "markus@ns8test.com" here smtphost <Neth_IP>
 ```
 
