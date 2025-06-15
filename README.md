@@ -44,12 +44,20 @@ poll pop.server tracepolls proto pop3 uidl auth password port 995 timeout 60
     user "<USER_NAME>" password "<PASSWORD>" ssl keep is <localmailuser@localmailserver.com> smtphost <Neth_IP>
 ```
 
-This one did work for IMAP:
+This one did work for IMAP on port 143:
 
 ```
 #   IMAP
 poll mrmarkuz.domain.tld proto imap port 143
     user "<USER_NAME>" password "<PASSWORD>" keep is "markus@ns8test.com" here smtphost <Neth_IP>
+```
+
+This one did work for IMAPS on port 993:
+
+```
+#   IMAP
+poll mrmarkuz.domain.tld proto imap port 993
+    user "<USER_NAME>" password "<PASSWORD>" ssl keep is "markus@ns8test.com" here smtphost <Neth_IP>
 ```
 
 The fetchmailrc file needs to have permission 700.
