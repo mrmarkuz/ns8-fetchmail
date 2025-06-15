@@ -55,7 +55,7 @@ poll mrmarkuz.domain.tld proto imap port 143
 This one did work for IMAPS on port 993:
 
 ```
-#   IMAP
+#   IMAPS
 poll mrmarkuz.domain.tld proto imap port 993
     user "<USER_NAME>" password "<PASSWORD>" ssl keep is "markus@ns8test.com" here smtphost <Neth_IP>
 ```
