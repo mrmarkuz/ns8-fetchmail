@@ -30,7 +30,7 @@ There's another directory `log` that maps `/var/log` in the container to be able
 An example cronjob file to put to `cron/examplecronjob` that runs fetchmail every 5 minutes:
 
 ```
-*/5 * * * * root /usr/bin/fetchmail -d0 -v -f /etc/fetchmail/fetchmailrc -L /var/log/fetchmail.log
+*/5 * * * * root /usr/bin/fetchmail -d0 -v -f /etc/fetchmail/fetchmailrc > /var/log/fetchmail.log
 ```
 
 An example fetchmail config file to put to `fetchmail/fetchmailrc`:
