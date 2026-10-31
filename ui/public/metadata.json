@@ -15,9 +15,9 @@
     }
   ],
   "docs": {
-    "documentation_url": "https://github.com/author/ns8-fetchmail",
-    "bug_url": "https://github.com/NethServer/dev",
-    "code_url": "https://github.com/author/ns8-fetchmail"
+    "documentation_url": "https://github.com/mrmarkuz/ns8-fetchmail",
+    "bug_url": "https://github.com/mrmarkuz/ns8-fetchmail",
+    "code_url": "https://github.com/mrmarkuz/ns8-fetchmail"
   },
-  "source": "ghcr.io/nethserver/fetchmail"
+  "source": "ghcr.io/mrmarkuz/fetchmail"
 }
