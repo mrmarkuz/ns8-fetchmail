@@ -14,7 +14,7 @@ repobase="${REPOBASE:-ghcr.io/mrmarkuz}"
 
 #Create fetchmail-webapp container
 reponame="fetchmail-binary"
-container=$(buildah from docker.io/library/alpine:3.23.3)
+container=$(buildah from docker.io/library/alpine:3.24.3)
 buildah run "${container}" /bin/sh <<'EOF'
 set -e
 apk add --no-cache cronie fetchmail fetchmail-openrc fetchmail-doc nano
