@@ -1,17 +1,21 @@
 {
-  "name": "fetchmail",
+  "name": "Fetchmail",
   "description": {
-    "en": "My fetchmail module"
+    "en": "Fetchmail is an open-source software utility for Unix-like operating systems designed to retrieve email from remote mail servers and forward it to the local system",
+    "de": "Fetchmail ist ein Open-Source-Softwareprogramm für Unix-artige Betriebssysteme, das dazu dient, E-Mails von entfernten Mailservern abzurufen und an das lokale System weiterzuleiten",
+    "fr": "Fetchmail est un logiciel libre destiné aux systèmes d'exploitation de type Unix, conçu pour récupérer des courriels depuis des serveurs de messagerie distants et les transférer vers le système local",
+    "it": "Fetchmail è un'utility software open source per sistemi operativi di tipo Unix, progettata per recuperare messaggi di posta elettronica da server remoti e inoltrarli al sistema locale",
+    "es": "Fetchmail es una utilidad de software de código abierto para sistemas operativos tipo Unix, diseñada para recuperar correo electrónico de servidores remotos y reenviarlo al sistema local"
   },
   "categories": [],
   "authors": [
     {
-      "name": "Name Surname",
-      "email": "author@yourmail.org"
+      "name": "Markus Neuberger",
+      "email": "dev@markusneuberger.at"
     }
   ],
   "docs": {
-    "documentation_url": "https://docs.fetchmail.com/",
+    "documentation_url": "https://github.com/author/ns8-fetchmail",
     "bug_url": "https://github.com/NethServer/dev",
     "code_url": "https://github.com/author/ns8-fetchmail"
   },
