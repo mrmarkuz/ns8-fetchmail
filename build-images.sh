@@ -53,6 +53,7 @@ buildah add "${container}" ui/dist /ui
 buildah config --entrypoint=/ \
     --label="org.nethserver.authorizations=mail@any:mailadm" \
     --label="org.nethserver.rootfull=0" \
+	--label="org.nethserver.min-core=3.12.4-0" \
     --label="org.nethserver.images=${repobase}/fetchmail-binary:${IMAGETAG:-latest}" \
     "${container}"
 # Commit the image
