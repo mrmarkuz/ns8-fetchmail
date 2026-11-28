@@ -11,7 +11,10 @@ set -e
 images=()
 # The image will be pushed to GitHub container registry
 repobase="${REPOBASE:-ghcr.io/mrmarkuz}"
-
+# renovate: datasource=npm packageName=corepack
+ARG COREPACK_VERSION=0.36.0
+RUN npm install -g corepack@${COREPACK_VERSION} \
+    && corepack enable
 #Create fetchmail-webapp container
 reponame="fetchmail-binary"
 container=$(buildah from docker.io/library/alpine:3.24.4)
@@ -36,7 +39,8 @@ container=$(buildah from scratch)
 # Reuse existing nodebuilder-fetchmail container, to speed up builds
 if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-fetchmail; then
     echo "Pulling NodeJS runtime..."
-    buildah from --name nodebuilder-fetchmail -v "${PWD}:/usr/src:Z" docker.io/library/node:24.22.3
+    buildah from --name nodebuilder-fetchmail -v "${PWD}:/usr/src:Z" docker.io/library/node:26.13.0-slim
+    buildah run nodebuilder-fetchmail sh -c "npm install -g corepack@${corepack_version} && corepack enable"
 fi
 
 echo "Build static UI files with node..."
@@ -53,7 +57,7 @@ buildah add "${container}" ui/dist /ui
 buildah config --entrypoint=/ \
     --label="org.nethserver.authorizations=mail@any:mailadm" \
     --label="org.nethserver.rootfull=0" \
-	--label="org.nethserver.min-core=3.12.4-0" \
+	--label="org.nethserver.min-core=3.20.1" \
     --label="org.nethserver.images=${repobase}/fetchmail-binary:${IMAGETAG:-latest}" \
     "${container}"
 # Commit the image
